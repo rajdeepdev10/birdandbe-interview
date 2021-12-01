@@ -1,5 +1,5 @@
 # Live Demo
-## https://61a5144d611fbe556da96b3c--birdandbe-interview.netlify.app/
+## https://birdandbe-interview.netlify.app/
 
 # Getting Started with Create React App
 
