@@ -1,23 +1,56 @@
-import logo from './logo.svg';
+import axios from "axios";
+import { useState, useEffect } from "react";
+
 import './App.css';
 
 function App() {
+  const [state, setState] = useState({
+    products: [],
+    total: 0
+  });
+
+  useEffect(() => {
+    axios
+      .get("https://web-ge8buw2ff-bird-and-be.vercel.app/api/interview")
+      .then((res) => {
+        setState({
+          ...state,
+          products: res.data.products
+        });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <div>
+        {state.products.map((product) => (
+          <div className="product-card" key={product.id}>
+            <div>
+              <img
+                src={product.primary_image.url_standard}
+                alt={product.primary_image.description}
+              />
+            </div>
+            <div>
+              <h4>{product.name}</h4>
+              <h3>${product.price}</h3>
+              <div
+                className="card-description"
+                dangerouslySetInnerHTML={{ __html: product.description }}
+              ></div>
+              <a href="#" className="btn btn-primary">
+                Add to cart
+              </a>
+            </div>
+          </div>
+        ))}
+      </div>
+      <div className="total">
+        <h1>Total: ${state.total}</h1>
+      </div>
     </div>
   );
 }
