@@ -6,6 +6,7 @@ import './App.css';
 function App() {
   const [state, setState] = useState({
     products: [],
+    cart: [],
     total: 0
   });
 
@@ -21,7 +22,23 @@ function App() {
       .catch((err) => {
         console.log(err);
       });
-  }, []);
+  }, []); // TODO: resolve dependency warning
+
+  function addToCart(productId, price) {
+    setState({
+      ...state,
+      cart: [...state.cart, productId],
+      total: state.total + price
+    });
+  }
+
+  function removeFromCart(productId, price) {
+    setState({
+      ...state,
+      cart: state.cart.filter((product) => product !== productId),
+      total: state.total - price
+    });
+  }
 
   return (
     <div>
@@ -41,9 +58,21 @@ function App() {
                 className="card-description"
                 dangerouslySetInnerHTML={{ __html: product.description }}
               ></div>
-              <a href="#" className="btn btn-primary">
-                Add to cart
-              </a>
+              {state.cart.includes(product.id) ? (
+                <button
+                  onClick={() => removeFromCart(product.id, product.price)}
+                  className="btn btn-danger"
+                >
+                  Remove from cart
+                </button>
+              ) : (
+                <button
+                  onClick={() => addToCart(product.id, product.price)}
+                  className="btn btn-primary"
+                >
+                  Add to cart
+                </button>
+              )}
             </div>
           </div>
         ))}
