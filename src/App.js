@@ -42,13 +42,14 @@ function App() {
 
   return (
     <div>
-      <div>
+      <div className="d-lg-flex p-2 justify-content-center">
         {state.products.map((product) => (
           <div className="product-card" key={product.id}>
             <div>
               <img
                 src={product.primary_image.url_standard}
                 alt={product.primary_image.description}
+                className="product-img"
               />
             </div>
             <div>
